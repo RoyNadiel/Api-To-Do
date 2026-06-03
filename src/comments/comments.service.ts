@@ -8,10 +8,7 @@ export class CommentsService {
 
   async create(dto: CreateCommentDto, usuarioId: number) {
     // Verificar que la tarea existe
-    const task = await this.db.queryOne<{ id: number }>(
-      'SELECT id FROM tareas WHERE id = $1',
-      [dto.tarea_id],
-    );
+    const task = await this.db.queryOne<{ id: number }>('SELECT id FROM tareas WHERE id = $1', [dto.tarea_id]);
 
     if (!task) {
       throw new NotFoundException(`Tarea con ID ${dto.tarea_id} no encontrada`);

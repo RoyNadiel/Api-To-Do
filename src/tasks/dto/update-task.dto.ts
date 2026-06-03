@@ -1,11 +1,4 @@
-import {
-  IsString,
-  IsOptional,
-  IsInt,
-  Min,
-  IsDateString,
-  IsIn,
-} from 'class-validator';
+import { IsString, IsOptional, IsInt, Min, IsDateString, IsIn } from 'class-validator';
 import { Type } from 'class-transformer';
 
 const VALID_STATES = ['pendiente', 'en progreso', 'en revisión', 'completado'];
@@ -32,10 +25,7 @@ export class UpdateTaskDto {
   estado?: string;
 
   @IsOptional()
-  @IsDateString(
-    {},
-    { message: 'La fecha de entrega debe ser una fecha válida' },
-  )
+  @IsDateString({}, { message: 'La fecha de entrega debe ser una fecha válida' })
   fecha_entrega?: string;
 
   @IsOptional()

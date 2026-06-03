@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Delete,
-  Param,
-  ParseIntPipe,
-  HttpCode,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, HttpCode, HttpStatus } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 
 @Controller('categories')

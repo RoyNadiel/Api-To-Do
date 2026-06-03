@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Param,
-  Body,
-  Query,
-  ParseIntPipe,
-  HttpStatus,
-  HttpCode,
-} from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Body, Query, ParseIntPipe, HttpStatus, HttpCode } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -57,10 +46,7 @@ export class TasksController {
 
   @Post(':taskId/categories')
   @HttpCode(HttpStatus.CREATED)
-  createAndAssociateCategory(
-    @Param('taskId', ParseIntPipe) taskId: number,
-    @Body() dto: CreateCategoryDto,
-  ) {
+  createAndAssociateCategory(@Param('taskId', ParseIntPipe) taskId: number, @Body() dto: CreateCategoryDto) {
     return this.tasksService.createAndAssociateCategory(taskId, dto);
   }
 

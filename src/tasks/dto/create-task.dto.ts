@@ -1,11 +1,4 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
-  IsInt,
-  Min,
-  IsDateString,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsInt, Min, IsDateString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateTaskDto {
@@ -24,10 +17,7 @@ export class CreateTaskDto {
   story_points?: number;
 
   @IsOptional()
-  @IsDateString(
-    {},
-    { message: 'La fecha de entrega debe ser una fecha válida (YYYY-MM-DD)' },
-  )
+  @IsDateString({}, { message: 'La fecha de entrega debe ser una fecha válida (YYYY-MM-DD)' })
   fecha_entrega?: string;
 
   @Type(() => Number)

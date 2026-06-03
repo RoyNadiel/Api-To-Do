@@ -18,10 +18,7 @@ import { POOL_TOKEN } from './database.constants';
           database: config.get<string>('DB_NAME'),
           user: config.get<string>('DB_USER'),
           password: config.get<string>('DB_PASSWORD'),
-          ssl:
-            config.get<string>('DB_SSL') === 'true'
-              ? { rejectUnauthorized: false }
-              : false,
+          ssl: config.get<string>('DB_SSL') === 'true' ? { rejectUnauthorized: false } : false,
           max: 10,
           idleTimeoutMillis: 30_000,
           connectionTimeoutMillis: 5_000,

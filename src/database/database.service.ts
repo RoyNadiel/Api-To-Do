@@ -9,10 +9,7 @@ export class DatabaseService {
   /**
    * Ejecuta una consulta SQL parametrizada y retorna todas las filas.
    */
-  async query<T extends QueryResultRow = any>(
-    sql: string,
-    params: unknown[] = [],
-  ): Promise<T[]> {
+  async query<T extends QueryResultRow = any>(sql: string, params: unknown[] = []): Promise<T[]> {
     const result = await this.pool.query<T>(sql, params);
     return result.rows;
   }
@@ -20,10 +17,7 @@ export class DatabaseService {
   /**
    * Ejecuta una consulta y retorna la primera fila o null.
    */
-  async queryOne<T extends QueryResultRow = any>(
-    sql: string,
-    params: unknown[] = [],
-  ): Promise<T | null> {
+  async queryOne<T extends QueryResultRow = any>(sql: string, params: unknown[] = []): Promise<T | null> {
     const result = await this.pool.query<T>(sql, params);
     return result.rows[0] ?? null;
   }

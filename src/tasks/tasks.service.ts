@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-  ConflictException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, ConflictException } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -144,9 +139,7 @@ export class TasksService {
     }
 
     if (fields.length === 0) {
-      throw new BadRequestException(
-        'No se proporcionaron campos para actualizar',
-      );
+      throw new BadRequestException('No se proporcionaron campos para actualizar');
     }
 
     params.push(taskId);
@@ -173,10 +166,10 @@ export class TasksService {
       throw new ConflictException('La categoría ya está asociada a esta tarea');
     }
 
-    await this.db.execute(
-      'INSERT INTO tarea_categorias (tarea_id, categoria_id) VALUES ($1, $2)',
-      [taskId, categoryId],
-    );
+    await this.db.execute('INSERT INTO tarea_categorias (tarea_id, categoria_id) VALUES ($1, $2)', [
+      taskId,
+      categoryId,
+    ]);
 
     return {
       message: 'Categoría asociada exitosamente',
@@ -185,10 +178,7 @@ export class TasksService {
     };
   }
 
-  async createAndAssociateCategory(
-    taskId: number,
-    dto: { nombre: string; descripcion?: string; color: string },
-  ) {
+  async createAndAssociateCategory(taskId: number, dto: { nombre: string; descripcion?: string; color: string }) {
     await this.ensureTaskExists(taskId);
 
     // Intentar buscar categoría existente por nombre
@@ -197,10 +187,7 @@ export class TasksService {
       nombre: string;
       descripcion: string;
       color: string;
-    }>(
-      'SELECT id, nombre, descripcion, color FROM categorias WHERE nombre = $1',
-      [dto.nombre],
-    );
+    }>('SELECT id, nombre, descripcion, color FROM categorias WHERE nombre = $1', [dto.nombre]);
 
     if (!category) {
       // Crear la categoría
@@ -224,10 +211,10 @@ export class TasksService {
     );
 
     if (!existing) {
-      await this.db.execute(
-        'INSERT INTO tarea_categorias (tarea_id, categoria_id) VALUES ($1, $2)',
-        [taskId, category!.id],
-      );
+      await this.db.execute('INSERT INTO tarea_categorias (tarea_id, categoria_id) VALUES ($1, $2)', [
+        taskId,
+        category!.id,
+      ]);
     }
 
     return { categoria: category, asociada: true };
@@ -236,34 +223,23 @@ export class TasksService {
   // ─── Helpers ──────────────────────────────────────────────
 
   private async ensureTaskExists(taskId: number): Promise<void> {
-    const task = await this.db.queryOne<{ id: number }>(
-      'SELECT id FROM tareas WHERE id = $1',
-      [taskId],
-    );
+    const task = await this.db.queryOne<{ id: number }>('SELECT id FROM tareas WHERE id = $1', [taskId]);
     if (!task) {
       throw new NotFoundException(`Tarea con ID ${taskId} no encontrada`);
     }
   }
 
   private async ensureUserExists(userId: number): Promise<void> {
-    const user = await this.db.queryOne<{ id: number }>(
-      'SELECT id FROM usuarios WHERE id = $1',
-      [userId],
-    );
+    const user = await this.db.queryOne<{ id: number }>('SELECT id FROM usuarios WHERE id = $1', [userId]);
     if (!user) {
       throw new BadRequestException(`Usuario con ID ${userId} no existe`);
     }
   }
 
   private async ensureCategoryExists(categoryId: number): Promise<void> {
-    const cat = await this.db.queryOne<{ id: number }>(
-      'SELECT id FROM categorias WHERE id = $1',
-      [categoryId],
-    );
+    const cat = await this.db.queryOne<{ id: number }>('SELECT id FROM categorias WHERE id = $1', [categoryId]);
     if (!cat) {
-      throw new NotFoundException(
-        `Categoría con ID ${categoryId} no encontrada`,
-      );
+      throw new NotFoundException(`Categoría con ID ${categoryId} no encontrada`);
     }
   }
 }

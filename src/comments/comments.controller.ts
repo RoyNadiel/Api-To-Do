@@ -9,10 +9,7 @@ export class CommentsController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(
-    @Body() dto: CreateCommentDto,
-    @CurrentUser() user: { userId: number },
-  ) {
+  create(@Body() dto: CreateCommentDto, @CurrentUser() user: { userId: number }) {
     return this.commentsService.create(dto, user.userId);
   }
 }

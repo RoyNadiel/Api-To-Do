@@ -25,10 +25,7 @@ import { TokenRevocationService } from './token-revocation.service';
           privateKey,
           signOptions: {
             algorithm: 'RS256' as const,
-            expiresIn: config.get<string>(
-              'JWT_EXPIRATION',
-              '1h',
-            ) as unknown as number,
+            expiresIn: config.get<string>('JWT_EXPIRATION', '1h') as unknown as number,
           },
         };
       },

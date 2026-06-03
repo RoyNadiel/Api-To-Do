@@ -12,9 +12,7 @@ export class CategoriesService {
     );
 
     if (!category) {
-      throw new NotFoundException(
-        `Categoría con ID ${categoryId} no encontrada`,
-      );
+      throw new NotFoundException(`Categoría con ID ${categoryId} no encontrada`);
     }
 
     await this.db.execute('DELETE FROM categorias WHERE id = $1', [categoryId]);

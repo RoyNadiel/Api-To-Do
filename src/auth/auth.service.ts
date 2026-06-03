@@ -23,10 +23,7 @@ export class AuthService {
   /**
    * Valida credenciales del usuario contra la base de datos.
    */
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<Omit<UserRow, 'contrasena'>> {
+  async validateUser(email: string, password: string): Promise<Omit<UserRow, 'contrasena'>> {
     const user = await this.db.queryOne<UserRow>(
       'SELECT id, email, contrasena, nombre FROM usuarios WHERE email = $1',
       [email],
