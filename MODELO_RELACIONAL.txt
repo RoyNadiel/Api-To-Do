@@ -1,0 +1,89 @@
+====================================================================
+MODELO RELACIONAL DE LA BASE DE DATOS (API DE GESTIÓN DE TAREAS)
+====================================================================
+
+1. TABLA: usuarios
+--------------------------------------------------------------------
+Descripción: Almacena la información de los usuarios del sistema.
+Campos:
+  - id          : INTEGER (SERIAL) - Clave Primaria (PK), Autoincremental.
+  - email       : TEXT - NOT NULL, UNIQUE (Correo único de usuario).
+  - contrasena  : TEXT - NOT NULL (Hash bcrypt de la contraseña).
+  - nombre      : TEXT - NULLABLE (Nombre del usuario).
+
+Relaciones:
+  - Un usuario puede crear 0 o muchas tareas (1:N con `tareas.creado_por`).
+  - Un usuario puede tener asignadas 0 o muchas tareas (1:N con `tareas.asignado_a`).
+  - Un usuario puede realizar 0 o muchos comentarios (1:N con `comentarios.usuario_id`).
+
+
+2. TABLA: categorias
+--------------------------------------------------------------------
+Descripción: Almacena las categorías que se pueden asociar a las tareas.
+Campos:
+  - id          : INTEGER (SERIAL) - Clave Primaria (PK), Autoincremental.
+  - nombre      : TEXT - NOT NULL, UNIQUE (Nombre único de la categoría).
+  - descripcion : TEXT - NULLABLE (Descripción opcional).
+  - color       : TEXT - NOT NULL (Código de color en formato hexadecimal).
+
+Relaciones:
+  - Una categoría puede estar asociada a 0 o muchas tareas (M:N con `tareas` mediante la tabla intermedia `tarea_categorias`).
+
+
+3. TABLA: tareas
+--------------------------------------------------------------------
+Descripción: Almacena las tareas registradas en el sistema.
+Campos:
+  - id             : INTEGER (SERIAL) - Clave Primaria (PK), Autoincremental.
+  - nombre         : TEXT - NOT NULL (Nombre de la tarea).
+  - descripcion    : TEXT - NULLABLE (Descripción detallada de la tarea).
+  - story_points   : INTEGER - NULLABLE, Restricción CHECK (story_points >= 0).
+  - estado         : ENUM ('pendiente', 'en progreso', 'en revisión', 'completado') - NOT NULL, DEFAULT 'pendiente'.
+  - fecha_entrega  : DATE - NULLABLE (Fecha límite de entrega).
+  - creado_por     : INTEGER - NOT NULL, Clave Foránea (FK -> usuarios.id).
+  - asignado_a     : INTEGER - NOT NULL, Clave Foránea (FK -> usuarios.id).
+  - fecha_creacion : TIMESTAMPTZ - NOT NULL, DEFAULT NOW().
+
+Relaciones:
+  - Pertenece a 1 usuario creador (`creado_por` -> `usuarios.id`).
+  - Está asignada a 1 usuario responsable (`asignado_a` -> `usuarios.id`).
+  - Una tarea puede tener 0 o muchos comentarios (1:N con `comentarios.tarea_id`, ON DELETE CASCADE).
+  - Una tarea puede estar asociada a 0 o muchas categorías (M:N con `categorias` mediante `tarea_categorias`).
+
+
+4. TABLA: tarea_categorias (Tabla Intermedia)
+--------------------------------------------------------------------
+Descripción: Representa la relación muchos a muchos (M:N) entre tareas y categorías.
+Campos:
+  - tarea_id     : INTEGER - NOT NULL, Clave Foránea (FK -> tareas.id, ON DELETE CASCADE).
+  - categoria_id : INTEGER - NOT NULL, Clave Foránea (FK -> categorias.id, ON DELETE CASCADE).
+
+Clave Primaria Compuesta: (tarea_id, categoria_id)
+
+Relaciones:
+  - Asocia 1 tarea con 1 categoría específica.
+
+
+5. TABLA: comentarios
+--------------------------------------------------------------------
+Descripción: Almacena los comentarios realizados por los usuarios en las tareas.
+Campos:
+  - id          : INTEGER (SERIAL) - Clave Primaria (PK), Autoincremental.
+  - contenido   : TEXT - NOT NULL (Texto del comentario).
+  - fecha       : TIMESTAMPTZ - NOT NULL, DEFAULT NOW().
+  - usuario_id  : INTEGER - NOT NULL, Clave Foránea (FK -> usuarios.id).
+  - tarea_id    : INTEGER - NOT NULL, Clave Foránea (FK -> tareas.id, ON DELETE CASCADE).
+
+Relaciones:
+  - Pertenece a 1 usuario autor (`usuario_id` -> `usuarios.id`).
+  - Pertenece a 1 tarea (`tarea_id` -> `tareas.id`).
+
+====================================================================
+RESUMEN DE CARDINALIDADES:
+====================================================================
+- usuarios (1) <---> (N) tareas [creado_por]
+- usuarios (1) <---> (N) tareas [asignado_a]
+- usuarios (1) <---> (N) comentarios [usuario_id]
+- tareas (1)   <---> (N) comentarios [tarea_id]
+- tareas (M)   <---> (N) categorias  [vía tarea_categorias]
+====================================================================
