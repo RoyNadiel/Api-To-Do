@@ -20,3 +20,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Skills
+.agents
+
+#Project Details
+ProjectOverview.md

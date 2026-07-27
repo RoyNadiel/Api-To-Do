@@ -3,8 +3,8 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { QueryTasksDto } from './dto/query-tasks.dto';
-import { CreateCategoryDto } from '../categories/dto/create-category.dto';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { CreateCategoryDto } from '@/modules/categories/dto/create-category.dto';
+import { CurrentUser } from '@/common/decorators/current-user.decorator';
 
 @Controller('tasks')
 export class TasksController {

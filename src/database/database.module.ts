@@ -25,7 +25,7 @@ import { POOL_TOKEN } from './database.constants';
         });
 
         pool.on('error', (err) => {
-          console.error('Unexpected pool error:', err.message);
+          console.error('Unexpected UDO POOL error:', err.message);
         });
 
         return pool;

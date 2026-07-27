@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { DatabaseModule } from './database/database.module';
-import { AuthModule } from './auth/auth.module';
-import { TasksModule } from './tasks/tasks.module';
-import { CategoriesModule } from './categories/categories.module';
-import { CommentsModule } from './comments/comments.module';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { DatabaseModule } from '@/database/database.module';
+import { AuthModule } from '@/modules/auth/auth.module';
+import { TasksModule } from '@/modules/tasks/tasks.module';
+import { CategoriesModule } from '@/modules/categories/categories.module';
+import { CommentsModule } from '@/modules/comments/comments.module';
+import { JwtAuthGuard } from '@/modules/auth/jwt-auth.guard';
 
 @Module({
   imports: [

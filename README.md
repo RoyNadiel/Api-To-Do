@@ -94,11 +94,12 @@ La API estará corriendo en `http://localhost:3000`.
 
 ## Estructura del Código
 
+- `MODELO_RELACIONAL.txt` - Especificación completa del modelo relacional de la base de datos en formato texto.
 - `src/database/` - Manejo de la conexión mediante cliente pooling de pg.
-- `src/auth/` - Lógica de login, estrategias de validación JWT (RS256) y blacklist en memoria.
-- `src/tasks/` - Módulos, servicios, controladores y DTOs para las tareas.
-- `src/categories/` - Módulos y servicios de categorización.
-- `src/comments/` - Lógica de comentarios de las tareas.
+- `src/modules/auth/` - Lógica de login, estrategias de validación JWT (RS256) y revocación en memoria.
+- `src/modules/tasks/` - Módulos, servicios, controladores y DTOs para las tareas.
+- `src/modules/categories/` - Módulos y servicios de categorización.
+- `src/modules/comments/` - Lógica de comentarios de las tareas.
 
 ---
 

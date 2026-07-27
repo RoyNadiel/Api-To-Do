@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { v4 as uuidv4 } from 'uuid';
-import { DatabaseService } from '../database/database.service';
+import { DatabaseService } from '@/database/database.service';
 import { TokenRevocationService } from './token-revocation.service';
+import { v4 as uuidv4 } from 'uuid';
+import * as bcrypt from 'bcrypt';
 
 interface UserRow {
   id: number;
@@ -35,10 +35,9 @@ export class AuthService {
 
     const isPasswordValid = await bcrypt.compare(password, user.contrasena);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Credenciales inválidas');
+      throw new UnauthorizedException('Contraseña invalida');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { contrasena: _, ...result } = user;
     return result;
   }
